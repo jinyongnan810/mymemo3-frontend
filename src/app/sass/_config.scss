@@ -1,0 +1,43 @@
+$header-height: 300px;
+$title-height: 100px;
+$bg-img: url("https://images.unsplash.com/photo-1569205534881-a028dc99a029?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1498&q=80");
+$bg-color: #f9fafb;
+$text-color: #000;
+$h-box-shadow: 0px 6px 3px -3px rgba(0, 0, 0, 0.3);
+// darks
+$dark-bg-img: url("https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80");
+$dark-bg-color: #120a31;
+$dark-text-color: #fff;
+$dark-h-box-shadow: 0px 6px 3px -3px rgba(255, 255, 255, 0.3);
+// other variables
+$sidebar-transition: 0.5s;
+$sidebar-color: rgba(0, 0, 0, 0.6);
+$sidebar-shadow-color: rgba(255, 255, 255, 0.6);
+
+@mixin theme($name, $bg, $text, $url, $shadow) {
+  .#{$name} {
+    background-image: linear-gradient(
+      120deg,
+      darken($bg, 10%),
+      $bg,
+      lighten($bg, 10%)
+    );
+    color: $text;
+    h1:not(.k-site-title),
+    h2,
+    h3,
+    h4,
+    h5 {
+      box-shadow: $shadow;
+    }
+    .site-title {
+      color: $text;
+    }
+    .header {
+      background-image: $url;
+    }
+    .k-editor {
+      color: $text;
+    }
+  }
+}

@@ -1,0 +1,75 @@
+.login-container {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100vh;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: $dark-bg-color;
+  &.login {
+    display: flex;
+  }
+  .login-card {
+    background-color: rgba($color: #ffffff, $alpha: 0.3);
+    border-radius: 5px;
+    width: 50%;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    .login-title {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+    form {
+      width: 100%;
+      .login-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .login-input {
+          color: lighten($dark-bg-color, 10%);
+          padding: 5px 20px;
+          margin: 10px 15px;
+          height: 50px;
+          line-height: 50px;
+          font-size: 28px;
+          border-radius: 5px;
+          appearance: none;
+          border: none;
+          outline: none;
+        }
+      }
+      .login-btn {
+        margin-top: 20px;
+        align-self: center;
+        width: 50%;
+        height: 50px;
+        font-size: 30px;
+        border-radius: 5px;
+        background-color: $dark-bg-color;
+        border: none;
+        outline: none;
+        color: #fff;
+        &:hover {
+          background-color: lighten($dark-bg-color, 10%);
+        }
+        &:focus {
+          transform: scale(0.98);
+        }
+      }
+    }
+  }
+}
