@@ -5,6 +5,7 @@ import { useAppSelector } from "../../../app/hooks";
 const Alert = ({ alert }: { alert: any }) => {
   const message = useAppSelector((state) => state.messages);
   useEffect(() => {
+    if (!message.message.trim()) return;
     if (message.level === "success") {
       alert.success(
         <div style={{ textTransform: "initial" }}>{message.message}</div>
