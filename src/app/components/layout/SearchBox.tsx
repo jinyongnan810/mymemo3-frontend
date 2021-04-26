@@ -1,6 +1,7 @@
 import React from "react";
 import { searchMemo } from "../../actions/memo";
 import { useState } from "react";
+import { useAppDispatch } from "../../../app/hooks";
 
 const SearchBox = ({ toggle }: { toggle: Function }) => {
   const [word, setWord] = useState("");
@@ -8,10 +9,11 @@ const SearchBox = ({ toggle }: { toggle: Function }) => {
   const [inputChanged, toggleInputChanged] = useState(false);
   const contentEl = document.getElementById("content");
   const searchEl = document.getElementById("search");
+  const dispatch = useAppDispatch();
   //   let searchLock = false;
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWord(e.target.value);
-    searchMemo(e.target.value);
+    dispatch(searchMemo(e.target.value));
     toggleInputChanged(true);
     // regexSearch(e.target.value);
     // if (!searchLock) {
@@ -23,7 +25,7 @@ const SearchBox = ({ toggle }: { toggle: Function }) => {
     // }
   };
   const close = () => {
-    searchMemo("");
+    dispatch(searchMemo(""));
     clearHighlight();
     toggle(false);
   };
