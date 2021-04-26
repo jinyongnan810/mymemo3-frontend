@@ -1,15 +1,19 @@
 import { useAppSelector } from "../../../app/hooks";
 import PropTypes from "prop-types";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import AddMemo from "./AddMemo";
 import ListItem from "./ListItem";
 
 const List = () => {
   const { memos, currentMemo, loading } = useAppSelector((state) => state.memo);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <div className="k-sidebar-container" id="k-sidebar-container">
-      <div className="k-arrow">
+    <div
+      className={`k-sidebar-container ${sidebarOpen ? "open" : ""}`}
+      id="k-sidebar-container"
+    >
+      <div className="k-arrow" onClick={(e) => setSidebarOpen(!sidebarOpen)}>
         <img
           src="assets/imgs/right.svg"
           alt="Toggle List..."

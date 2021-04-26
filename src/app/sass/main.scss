@@ -111,7 +111,7 @@ a {
   box-shadow: 0 1px 5px $sidebar-shadow-color;
   transform: translateX(-200px);
   transition: transform $sidebar-transition ease;
-  &:hover {
+  &.open {
     transform: translateX(0);
     .k-arrow {
       img {
@@ -119,9 +119,9 @@ a {
       }
     }
   }
-  &:left {
-    transform: translateX(-200px);
-  }
+  // &.close {
+  //   transform: translateX(-200px);
+  // }
   .k-arrow {
     display: block;
     background-color: $sidebar-color;
