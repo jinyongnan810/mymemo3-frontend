@@ -206,7 +206,6 @@ const Content = () => {
           className={editing ? "k-content hide" : "k-content"}
         >
           <div className="k-updated-time">
-            Last updated at:&nbsp;
             <Moment format="GG.M.D kk:mm">
               {moment.utc(currentMemo.updatedAt).local()}
             </Moment>
