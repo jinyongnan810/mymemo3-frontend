@@ -184,7 +184,7 @@ const Content = () => {
     return (
       <div
         id="content"
-        className="k-editor-container fadeout-both"
+        className="k-editor-container"
         onDoubleClick={(e) => toggleEdit()}
         onDragOver={(e) => onDragOver()}
         onDragExit={(e) => onDropExit()}
