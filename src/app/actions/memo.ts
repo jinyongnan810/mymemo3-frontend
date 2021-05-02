@@ -4,7 +4,6 @@ import axios from "axios";
 
 import { showMessages } from "./messages";
 import * as types from "./types";
-axios.defaults.baseURL = "https://kins-memo.herokuapp.com/";
 console.log(
   "You can contact and make friends with me via yuunan.kin@gmail.com~"
 );
