@@ -1,25 +1,19 @@
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Redirect } from "react-router-dom";
 
 import { login } from "../../actions/auth";
 
 const Login = ({ showLogin }: { showLogin: boolean }) => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const { email, password } = formData;
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    dispatch(login(emailRef.current!.value, passwordRef.current!.value));
   };
 
   // if (isAuthenticated) {
@@ -36,8 +30,7 @@ const Login = ({ showLogin }: { showLogin: boolean }) => {
               type="text"
               className="login-input"
               name="email"
-              onChange={(e) => onChange(e)}
-              value={email}
+              ref={emailRef}
             />
           </div>
           <div className="login-form">
@@ -46,8 +39,7 @@ const Login = ({ showLogin }: { showLogin: boolean }) => {
               type="password"
               className="login-input"
               name="password"
-              onChange={(e) => onChange(e)}
-              value={password}
+              ref={passwordRef}
             />
           </div>
           <div className="login-form">
