@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown/with-html";
 import { updateMemo } from "../../actions/memo";
 import CodeBlock from "./CodeBlock";
@@ -19,7 +19,7 @@ const loadingMsg = [
 ];
 const Content = () => {
   const [editing, toggleEditing] = useState(false);
-  const [content, editContent] = useState("");
+  const contentEl = useRef<HTMLTextAreaElement>(null);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { currentMemo, loading } = useAppSelector((state) => state.memo);
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ const Content = () => {
       if (editing) {
         toggleEditing(false);
       }
-      editContent(currentMemo.content);
+      contentEl.current!.value = currentMemo.content;
     }
     // eslint-disable-next-line
   }, [currentMemo]);
@@ -100,7 +100,9 @@ const Content = () => {
       return;
     }
     if (editing) {
-      dispatch(updateMemo({ content }, currentMemo!.id));
+      dispatch(
+        updateMemo({ content: contentEl.current!.value }, currentMemo!.id)
+      );
     }
     toggleEditing(!editing);
   };
@@ -124,8 +126,10 @@ const Content = () => {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const contentAfter =
-      content.substring(0, start) + text + content.substring(end);
-    editContent(contentAfter);
+      contentEl.current!.value.substring(0, start) +
+      text +
+      contentEl.current!.value.substring(end);
+    contentEl.current!.value = contentAfter;
     setTimeout(() => {
       textarea.selectionStart = start + 1;
       textarea.selectionEnd = start + 1;
@@ -143,12 +147,12 @@ const Content = () => {
     const length = end - start;
 
     const contentAfter =
-      content.substring(0, start) +
+      contentEl.current!.value.substring(0, start) +
       text1 +
-      content.substring(start, end) +
+      contentEl.current!.value.substring(start, end) +
       text2 +
-      content.substring(end);
-    editContent(contentAfter);
+      contentEl.current!.value.substring(end);
+    contentEl.current!.value = contentAfter;
     setTimeout(() => {
       if (cursorStart) {
         textarea.selectionStart = start + cursorStart;
@@ -196,9 +200,8 @@ const Content = () => {
           <textarea
             className="k-editor hide-scrollbar"
             id="k-editor"
-            onChange={(e) => editContent(e.target.value)}
             onKeyDown={(e) => onKeyDown(e)}
-            value={content}
+            ref={contentEl}
           ></textarea>
         </div>
         <div
