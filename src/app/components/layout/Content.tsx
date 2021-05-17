@@ -2,8 +2,6 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown/with-html";
 import { updateMemo } from "../../actions/memo";
 import CodeBlock from "./CodeBlock";
-import Moment from "react-moment";
-import moment from "moment";
 import { showMessages } from "../../actions/messages";
 import FileUploader from "./FileUploader";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -208,11 +206,6 @@ const Content = () => {
           id="content-display"
           className={editing ? "k-content hide" : "k-content"}
         >
-          <div className="k-updated-time">
-            <Moment format="GG.M.D kk:mm">
-              {moment.utc(currentMemo.updatedAt).local()}
-            </Moment>
-          </div>
           <ReactMarkdown
             source={currentMemo.content}
             escapeHtml={false}

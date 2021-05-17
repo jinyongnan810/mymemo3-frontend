@@ -102,3 +102,4 @@ const memoReducer: Reducer<MemoBaseState, MemoBaseAction> = (
   }
 };
 export default memoReducer;
+export { MemoInfo };

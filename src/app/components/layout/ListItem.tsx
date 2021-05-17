@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import { setCurrentMemo, deleteMemo, updateMemo } from "../../actions/memo";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { MemoInfo } from "../../../app/reducers/memo";
+import Moment from "react-moment";
+import moment from "moment";
 
-const ListItem = ({ memo, isCurrent }: { memo: any; isCurrent: boolean }) => {
+const ListItem = ({
+  memo,
+  isCurrent,
+}: {
+  memo: MemoInfo;
+  isCurrent: boolean;
+}) => {
   const [title, setTitle] = useState(memo.title);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -48,6 +57,11 @@ const ListItem = ({ memo, isCurrent }: { memo: any; isCurrent: boolean }) => {
       key={memo.id}
       onClick={(e) => setCurrent(memo.id)}
     >
+      <div className="k-date">
+        <Moment format="GG.M.D kk:mm">
+          {moment.utc(memo.updatedAt).local()}
+        </Moment>
+      </div>
       {isAuthenticated ? (
         <input
           value={title}

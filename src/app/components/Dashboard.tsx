@@ -73,7 +73,7 @@ const Dashboard = () => {
 
   const login = () => {
     if (isAuthenticated) {
-      logout();
+      dispatch(logout());
       toggleShowLogin(false);
     } else {
       toggleShowLogin(!showLogin);
