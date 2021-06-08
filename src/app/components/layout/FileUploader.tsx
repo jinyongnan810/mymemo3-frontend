@@ -4,11 +4,13 @@ import PropTypes from "prop-types";
 import ZropZone from "react-dropzone";
 import { showMessages } from "../../actions/messages";
 import { connect } from "react-redux";
+import { useAppDispatch } from "../../../app/hooks";
 const FileUploader = ({ onUploadFile }: { onUploadFile: Function }) => {
+  const dispatch = useAppDispatch();
   const onPhotoSelected = async (files: any) => {
     for (let file of files) {
       if (file.size >= 1024000) {
-        showMessages("File need to be smaller than 1Mb.", "danger");
+        dispatch(showMessages("File need to be smaller than 1Mb.", "danger"));
         return;
       }
       const fileName = file.name;
@@ -20,7 +22,7 @@ const FileUploader = ({ onUploadFile }: { onUploadFile: Function }) => {
           headers: { "Content-Type": "application/json" },
         };
         try {
-          showMessages("Uploading...");
+          dispatch(showMessages("Uploading..."));
           const res = await axios.post(
             "/api/upload",
             JSON.stringify({ data: reader.result }),
@@ -32,12 +34,12 @@ const FileUploader = ({ onUploadFile }: { onUploadFile: Function }) => {
               showMessages("File too large.", "danger");
             }
           } else {
-            showMessages("Uploaded.");
+            dispatch(showMessages("Uploaded."));
             onPhotoUploaded(fileName, res.data);
           }
         } catch (error) {
           console.log("Upload failed.", error);
-          showMessages("Upload failed.", "danger");
+          dispatch(showMessages("Upload failed.", "danger"));
           return;
         }
       };

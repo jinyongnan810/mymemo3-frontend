@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown/with-html";
+import axios from "axios";
 import { updateMemo } from "../../actions/memo";
 import CodeBlock from "./CodeBlock";
 import { showMessages } from "../../actions/messages";
@@ -171,6 +172,48 @@ const Content = () => {
       uploadEl.classList.remove("show");
     }
   };
+  const onPasteFile = (e: React.ClipboardEvent) => {
+    const item = e.clipboardData.items[0];
+    if (item.kind === "file") {
+      const file = item.getAsFile();
+      if (!file) return;
+      const fileName = file.name;
+      if (file.size >= 1024000) {
+        dispatch(showMessages("File need to be smaller than 1Mb.", "danger"));
+        return;
+      }
+      var reader = new FileReader();
+      reader.onloadend = async () => {
+        const cfg = {
+          headers: { "Content-Type": "application/json" },
+        };
+        try {
+          dispatch(showMessages("Uploading..."));
+          const res = await axios.post(
+            "/api/upload",
+            JSON.stringify({ data: reader.result }),
+            cfg
+          );
+          if (res.status !== 200) {
+            showMessages("Upload failed.", "danger");
+            if (res.status === 503) {
+              showMessages("File too large.", "danger");
+            }
+          } else {
+            dispatch(showMessages("Uploaded."));
+            onUploadFile(fileName, res.data["secure_url"]);
+          }
+        } catch (error) {
+          console.log("Upload failed.", error);
+          dispatch(showMessages("Upload failed.", "danger"));
+          return;
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      return;
+    }
+  };
 
   if (loading) {
     return (
@@ -199,6 +242,7 @@ const Content = () => {
             className="k-editor hide-scrollbar"
             id="k-editor"
             onKeyDown={(e) => onKeyDown(e)}
+            onPaste={(e) => onPasteFile(e)}
             ref={contentEl}
           ></textarea>
         </div>
