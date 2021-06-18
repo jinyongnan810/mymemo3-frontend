@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { MemoInfo } from "../../../app/reducers/memo";
 import Moment from "react-moment";
 import moment from "moment";
+const { dataLayer } = window;
 
 const ListItem = ({
   memo,
@@ -40,6 +41,7 @@ const ListItem = ({
     }
   };
   const updateTitle = () => {
+    dataLayer.push({ event: "title-updated" });
     dispatch(updateMemo({ title: title }, memo.id));
   };
 
