@@ -6,6 +6,7 @@ import CodeBlock from "./CodeBlock";
 import { showMessages } from "../../actions/messages";
 import FileUploader from "./FileUploader";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import ImageModal from "./ImageModal";
 let loadingCount = 0;
 let timer: NodeJS.Timer;
 const loadingMsg = [
@@ -18,6 +19,7 @@ const loadingMsg = [
 ];
 const Content = () => {
   const [editing, toggleEditing] = useState(false);
+  const [scaledImage, setScaledImage] = useState<string | null>(null);
   const contentEl = useRef<HTMLTextAreaElement>(null);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const { currentMemo, loading } = useAppSelector((state) => state.memo);
@@ -53,6 +55,17 @@ const Content = () => {
   }, [loading]);
 
   // events
+  const onImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const clicked = e.target as HTMLElement;
+    if (clicked.tagName === 'IMG') {
+      e.stopPropagation()
+      const img = clicked as HTMLImageElement;
+      setScaledImage(img.src)
+    }
+  }
+  const onScaledImageClose = () => {
+    setScaledImage(null);
+  }
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     var keyCode = e.keyCode || e.which;
     // allow tab
@@ -248,6 +261,7 @@ const Content = () => {
         </div>
         <div
           id="content-display"
+          onClick={onImageClick}
           className={editing ? "k-content hide" : "k-content"}
         >
           <ReactMarkdown
@@ -257,6 +271,7 @@ const Content = () => {
             renderers={{ code: CodeBlock }}
           />
         </div>
+        <ImageModal img={scaledImage} onClose={onScaledImageClose} />
       </div>
     );
   } else {

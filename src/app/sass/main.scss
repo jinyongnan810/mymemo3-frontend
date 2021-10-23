@@ -280,7 +280,39 @@ code {
   display: none;
 }
 
-img:not(.k-loading):not(.k-title-delete) {
+.k-image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+  .k-close-image-modal {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.5s;
+    &:hover{
+      transform: rotateZ(180deg);
+    }
+  }
+}
+
+img:not(.k-loading):not(.k-title-delete):not(.k-image-modal img) {
   display: block;
   max-width: 100%;
   max-height: 400px;
