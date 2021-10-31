@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
+import { CSSTransition } from 'react-transition-group';
 import ReactMarkdown from "react-markdown/with-html";
 import axios from "axios";
 import { updateMemo } from "../../actions/memo";
@@ -7,6 +8,7 @@ import { showMessages } from "../../actions/messages";
 import FileUploader from "./FileUploader";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import ImageModal from "./ImageModal";
+import FloatingButton from "./FloatingButton";
 let loadingCount = 0;
 let timer: NodeJS.Timer;
 const loadingMsg = [
@@ -19,6 +21,7 @@ const loadingMsg = [
 ];
 const Content = () => {
   const [editing, toggleEditing] = useState(false);
+  const [text, setText] = useState('')
   const [scaledImage, setScaledImage] = useState<string | null>(null);
   const contentEl = useRef<HTMLTextAreaElement>(null);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -30,7 +33,8 @@ const Content = () => {
       if (editing) {
         toggleEditing(false);
       }
-      contentEl.current!.value = currentMemo.content;
+      // contentEl.current!.value = currentMemo.content;
+      setText(currentMemo.content);
     }
     // eslint-disable-next-line
   }, [currentMemo]);
@@ -113,7 +117,7 @@ const Content = () => {
     }
     if (editing) {
       dispatch(
-        updateMemo({ content: contentEl.current!.value }, currentMemo!.id)
+        updateMemo({ content: text }, currentMemo!.id)
       );
     }
     toggleEditing(!editing);
@@ -138,10 +142,10 @@ const Content = () => {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const contentAfter =
-      contentEl.current!.value.substring(0, start) +
+      text.substring(0, start) +
       text +
-      contentEl.current!.value.substring(end);
-    contentEl.current!.value = contentAfter;
+      text.substring(end);
+    setText(contentAfter);
     setTimeout(() => {
       textarea.selectionStart = start + 1;
       textarea.selectionEnd = start + 1;
@@ -159,12 +163,12 @@ const Content = () => {
     const length = end - start;
 
     const contentAfter =
-      contentEl.current!.value.substring(0, start) +
+      text.substring(0, start) +
       text1 +
-      contentEl.current!.value.substring(start, end) +
+      text.substring(start, end) +
       text2 +
-      contentEl.current!.value.substring(end);
-    contentEl.current!.value = contentAfter;
+      text.substring(end);
+    setText(contentAfter);
     setTimeout(() => {
       if (cursorStart) {
         textarea.selectionStart = start + cursorStart;
@@ -249,23 +253,29 @@ const Content = () => {
         onDragEnd={(e) => onDropExit()}
         onDrop={(e) => onDropExit()}
       >
+        {isAuthenticated && <FloatingButton editing={editing} toggleEdit={toggleEdit} />}
         {editing ? <FileUploader onUploadFile={onUploadFile} /> : ""}
-        <div className={editing ? "k-content" : "k-content hide"}>
-          <textarea
-            className="k-editor hide-scrollbar"
-            id="k-editor"
-            onKeyDown={(e) => onKeyDown(e)}
-            onPaste={(e) => onPasteFile(e)}
-            ref={contentEl}
-          ></textarea>
-        </div>
+        <CSSTransition in={editing} timeout={300} unmountOnExit classNames='k-editor-transition'>
+
+          <div className='k-content hide-scrollbar'>
+            <textarea
+              className="k-editor hide-scrollbar"
+              id="k-editor"
+              onKeyDown={(e) => onKeyDown(e)}
+              onPaste={(e) => onPasteFile(e)}
+              ref={contentEl}
+              value={text}
+              onChange={e => setText(e.target.value)}
+            ></textarea>
+          </div>
+        </CSSTransition>
         <div
           id="content-display"
           onClick={onImageClick}
-          className={editing ? "k-content hide" : "k-content"}
+          className='k-content hide-scrollbar'
         >
           <ReactMarkdown
-            source={currentMemo.content}
+            source={text}
             escapeHtml={false}
             linkTarget="_blank"
             renderers={{ code: CodeBlock }}

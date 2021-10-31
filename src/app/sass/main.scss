@@ -220,26 +220,47 @@ code {
   }
 }
 .k-editor-container {
-  width: 1000px;
+  width: 100%;
+  height: 100vh;
+  padding: 30px;
+  display: flex;
+  transition: all 300ms;
+  justify-content: center;
   .k-content {
-    width: 100%;
+    flex: 1;
     height: 100%;
+    max-width: 1000px;
     position: relative;
+    overflow:scroll;
     .k-editor {
       position: relative;
       z-index: 1;
       border: none;
       width: 100%;
-      min-height: 100%;
+      height: 100%;
       padding: 3px;
       appearance: none;
       outline: none;
       background: transparent;
     }
-    .k-updated-time {
-      position: absolute;
-      top: 20px;
-      right: 50px;
+  }
+  .k-editor-transition {
+    &-enter {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    &-enter-active {
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity 300ms, transform 300ms;
+    }
+    &-exit {
+      opacity: 1;
+    }
+    &-exit-active {
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 300ms, transform 300ms;
     }
   }
   .k-dropfile {
@@ -273,6 +294,16 @@ code {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+  }
+  .k-floating-btn{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: transform 300ms;
+    &:hover{
+      transform: scale(1.1);
     }
   }
 }
