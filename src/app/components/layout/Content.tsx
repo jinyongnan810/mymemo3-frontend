@@ -247,7 +247,6 @@ const Content = () => {
       <div
         id="content"
         className="k-editor-container"
-        onDoubleClick={(e) => toggleEdit()}
         onDragOver={(e) => onDragOver()}
         onDragExit={(e) => onDropExit()}
         onDragEnd={(e) => onDropExit()}
