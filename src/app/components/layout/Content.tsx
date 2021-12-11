@@ -2,6 +2,8 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { CSSTransition } from 'react-transition-group';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {vscDarkPlus} from 'react-syntax-highlighter/dist/esm/styles/prism'
 import axios from "axios";
 import { updateMemo } from "../../actions/memo";
 import CodeBlock from "./CodeBlock";
@@ -278,6 +280,23 @@ const Content = () => {
             children={text}
             linkTarget="_blank"
             remarkPlugins={[remarkGfm]}
+            components={{
+              code({node, inline, className, children, ...props}) {
+                const match = /language-(\w+)/.exec(className || '')
+                return !inline && match ? (
+                  <SyntaxHighlighter
+                    style={vscDarkPlus}
+                    language={match[1]}
+                  >
+                    {String(children).replace(/\n$/, '')}
+                  </SyntaxHighlighter>
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                )
+              }
+            }}
           />
         </div>
         <ImageModal img={scaledImage} onClose={onScaledImageClose} />
