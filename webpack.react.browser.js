@@ -37,6 +37,7 @@ module.exports = () => {
         stream: false,
         crypto: false,
         util: false,
+        tty: false,
       },
     },
     entry: path.resolve(rootPath, "src", "index.tsx"),
@@ -85,9 +86,9 @@ module.exports = () => {
         template: "./assets/index.html",
       }),
       new webpack.DefinePlugin(envKeys),
-      new webpack.ProvidePlugin({
-        process: "process/browser",
-      }),
+      // new webpack.ProvidePlugin({
+      //   process: "process/browser",
+      // }),
       new CopyPlugin({ patterns: [{ from: "assets", to: "assets" }] }),
     ],
   };

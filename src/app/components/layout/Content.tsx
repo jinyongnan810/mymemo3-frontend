@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { CSSTransition } from 'react-transition-group';
-import ReactMarkdown from "react-markdown/with-html";
+import ReactMarkdown from 'react-markdown';
 import axios from "axios";
 import { updateMemo } from "../../actions/memo";
 import CodeBlock from "./CodeBlock";
@@ -274,10 +274,8 @@ const Content = () => {
           className='k-content hide-scrollbar'
         >
           <ReactMarkdown
-            source={text}
-            escapeHtml={false}
+            children={text}
             linkTarget="_blank"
-            renderers={{ code: CodeBlock }}
           />
         </div>
         <ImageModal img={scaledImage} onClose={onScaledImageClose} />
