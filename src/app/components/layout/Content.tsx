@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { CSSTransition } from 'react-transition-group';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import axios from "axios";
 import { updateMemo } from "../../actions/memo";
 import CodeBlock from "./CodeBlock";
@@ -276,6 +277,7 @@ const Content = () => {
           <ReactMarkdown
             children={text}
             linkTarget="_blank"
+            remarkPlugins={[remarkGfm]}
           />
         </div>
         <ImageModal img={scaledImage} onClose={onScaledImageClose} />
