@@ -78,7 +78,7 @@ const Content = () => {
     // allow tab
     if (keyCode === 9) {
       e.preventDefault();
-      insertToCursor("\t");
+      insertToCursor("    ");
     }
     // save
     if (e.ctrlKey || e.metaKey) {
@@ -140,18 +140,18 @@ const Content = () => {
     const cursorEnd = null;
     insertToCursorSide(text1, text2, cursorStart, cursorEnd);
   };
-  const insertToCursor = (text: string) => {
+  const insertToCursor = (textToBeInserted: string) => {
     const textarea: any = document.getElementById("k-editor");
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const contentAfter =
       text.substring(0, start) +
-      text +
+      textToBeInserted +
       text.substring(end);
     setText(contentAfter);
     setTimeout(() => {
-      textarea.selectionStart = start + 1;
-      textarea.selectionEnd = start + 1;
+      textarea.selectionStart = start + textToBeInserted.length;
+      textarea.selectionEnd = start + textToBeInserted.length;
     }, 100);
   };
   const insertToCursorSide = (
